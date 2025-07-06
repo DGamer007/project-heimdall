@@ -1,0 +1,54 @@
+{
+    "name": "backend",
+    "targets": {
+        "dev": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "air",
+                "cwd": "apps/backend"
+            }
+        },
+        "build": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "make build",
+                "cwd": "apps/backend"
+            }
+        },
+        "run": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "make run",
+                "cwd": "apps/backend"
+            }
+        },
+        "debug": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "make debug",
+                "cwd": "apps/backend"
+            }
+        },
+        "pg-goose": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "make pg-goose",
+                "cwd": "apps/backend"
+            }
+        },
+        "web-e2e-test": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "make web-e2e-test",
+                "cwd": "apps/backend"
+            }
+        },
+        "clean": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "make clean",
+                "cwd": "apps/backend"
+            }
+        }
+    }
+}

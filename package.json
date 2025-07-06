@@ -1,0 +1,16 @@
+{
+  "name": "@heimdall/source",
+  "version": "0.0.0",
+  "license": "MIT",
+  "private": true,
+  "packageManager": "yarn@4.9.2",
+  "engines": {
+    "node": ">=18.0.0",
+    "yarn": "4.9.2"
+  },
+  "devDependencies": {
+    "@nx/js": "21.2.2",
+    "@nx/workspace": "21.2.2",
+    "nx": "21.2.2"
+  }
+}

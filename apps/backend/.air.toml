@@ -1,0 +1,30 @@
+root = "."
+tmp_dir = "tmp"
+
+[build]
+  cmd = "echo '[air] skipping default build...'"
+  full_bin = "make debug"
+  include_ext = ["go", "env", "yaml"]
+  delay = 1000
+  exclude_dir = ["tmp", "bin"]
+  exclude_unchanged = true
+  kill_delay = "0s"
+  log = "air.log"
+
+[color]
+  build = "yellow"
+  main = "magenta"
+  runner = "green"
+  watcher = "cyan"
+
+[log]
+  main_only = false
+  silent = false
+  time = true
+
+[misc]
+  clean_on_exit = true
+
+[screen]
+  clear_on_rebuild = true
+  keep_scroll = false

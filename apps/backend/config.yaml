@@ -1,0 +1,26 @@
+server:
+  gin_mode: test
+  port: 4000
+
+database:
+  postgres:
+    host: localhost
+    port: 5432
+    user: postgres
+    password: postgres
+    db_name: heimdall
+    ssl_mode: disable
+
+auth:
+  jwt:
+    issuer: auth.heimdall.local
+    access_token:
+      secret: AUTH_JWT_ACCESS_TOKEN_SECRET
+      ttl: 15m
+    refresh_token:
+      secret: AUTH_JWT_REFRESH_TOKEN_SECRET
+      ttl: 168h
+
+  providers:
+    local:
+      enabled: true
