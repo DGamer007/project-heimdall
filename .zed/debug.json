@@ -1,0 +1,10 @@
+[
+	{
+		"label": "Web Server Debugger",
+		"adapter": "Delve",
+		"request": "attach",
+		"mode": "remote",
+		"tcp_connection": { "host": "127.0.0.1", "port": 2345 },
+		"stopOnEntry": false
+	}
+]
