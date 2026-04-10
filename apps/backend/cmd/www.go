@@ -8,6 +8,7 @@ import (
 	"heimdall/backend/internal/config"
 	"heimdall/backend/internal/infra"
 	"heimdall/backend/internal/infra/postgres"
+	"heimdall/backend/internal/infra/redis"
 	"heimdall/backend/internal/interfaces/web"
 )
 
@@ -51,9 +52,26 @@ func main() {
 
 	log.Println("Postgres connection established successfully")
 
+	// Connect to Redis
+	Redis, err := redis.NewConnection(redis.Config{
+		Host: AppConfig.Database.Redis.Host,
+		Port: AppConfig.Database.Redis.Port,
+		User: AppConfig.Database.Redis.User,
+		Password: AppConfig.Database.Redis.Password,
+		DB: AppConfig.Database.Redis.DB,
+	})
+
+	if err != nil {
+		log.Printf("Failed to connect to Redis: %v", err)
+		os.Exit(1)
+	}
+
+	log.Println("Redis connection established successfully")
+
 	// Start server
 	server := web.NewServer(&infra.DataStore{
 		Postgres: Postgres,
+		Redis: Redis,
 	})
 	log.Printf("Starting server on port %s", AppConfig.Server.Port)
 

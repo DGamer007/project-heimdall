@@ -40,6 +40,15 @@ while ! docker_compose ps postgres --format "table {{.Service}}\t{{.Status}}" | 
 done
 echo "✅ Postgres is ready!"
 
+# Wait for Redis to be ready
+echo ""
+echo "⏳ Waiting for Redis to be healthy..."
+while ! docker_compose ps redis --format "table {{.Service}}\t{{.Status}}" | grep -q "healthy"; do
+    echo "   Still waiting..."
+    sleep 2
+done
+echo "✅ Redis is ready!"
+
 # Run database migrations
 echo ""
 echo "═══════════════════════════════════════"

@@ -14,11 +14,13 @@ import (
 	"heimdall/backend/internal/config"
 	"heimdall/backend/internal/infra"
 	"heimdall/backend/internal/infra/postgres"
+	"heimdall/backend/internal/infra/redis"
 	"heimdall/backend/internal/interfaces/web"
 	internal_errors "heimdall/backend/pkg/errors"
 
 	"github.com/charmbracelet/lipgloss"
 	"github.com/gin-gonic/gin"
+	go_redis "github.com/redis/go-redis/v9"
 )
 
 var (
@@ -65,6 +67,20 @@ func setupTestEnvironment() error {
 
 	log.Println("✅ Postgres connection established")
 
+	var Redis *go_redis.Client
+	Redis, err = redis.NewConnection(redis.Config{
+		Host:     TestAppConfig.Database.Redis.Host,
+		Port:     TestAppConfig.Database.Redis.Port,
+		User:     TestAppConfig.Database.Redis.User,
+		Password: TestAppConfig.Database.Redis.Password,
+		DB:       TestAppConfig.Database.Redis.DB,
+	})
+	if err != nil {
+		return internal_errors.NewInfrastructureError("Redis connection failed", err)
+	}
+
+	log.Println("✅ Redis connection established")
+
 	// Setup server logging based on environment variable
 	err = setupServerLogging()
 	if err != nil {
@@ -73,6 +89,7 @@ func setupTestEnvironment() error {
 
 	testDataStore = &infra.DataStore{
 		Postgres: Postgres,
+		Redis: Redis,
 	}
 	testRouter := web.NewRouter(testDataStore)
 	testServer = httptest.NewServer(testRouter.Setup())
@@ -289,11 +306,21 @@ func teardownTestEnvironment() {
 		log.Print("✅ Test server stopped")
 	}
 
-	if testDataStore != nil && testDataStore.Postgres != nil {
-		if err := testDataStore.Postgres.Close(); err != nil {
-			log.Printf("⚠️ Failed to close Postgres connection: %v", err)
-		} else {
-			log.Print("✅ Postgres connection closed")
+	if testDataStore != nil {
+		if testDataStore.Postgres != nil {
+			if err := testDataStore.Postgres.Close(); err != nil {
+				log.Printf("⚠️ Failed to close Postgres connection: %v", err)
+			} else {
+				log.Print("✅ Postgres connection closed")
+			}
+		}
+
+		if testDataStore.Redis != nil {
+			if err := testDataStore.Redis.Close(); err != nil {
+				log.Printf("⚠️ Failed to close Redis connection: %v", err)
+			} else {
+				log.Print("✅ Redis connection closed")
+			}
 		}
 	}
 

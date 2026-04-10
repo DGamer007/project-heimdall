@@ -13,3 +13,9 @@ services:
       - "${DATABASE_POSTGRES_PORT}:5432"
     volumes:
       - ./volumes/postgres:/var/lib/postgresql/data
+  redis:
+    image: redis:alpine3.23
+    expose:
+      - 6379
+    ports:
+      - "${DATABASE_REDIS_PORT}:6379"

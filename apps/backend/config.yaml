@@ -10,6 +10,13 @@ database:
     password: postgres
     db_name: heimdall
     ssl_mode: disable
+  redis:
+    host: localhost
+    port: 6379
+    user:
+    password:
+    db: 0
+
 
 auth:
   jwt:
